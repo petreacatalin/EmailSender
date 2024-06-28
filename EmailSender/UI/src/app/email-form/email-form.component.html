@@ -1,0 +1,111 @@
+<div class="control-section">
+    <div class="col-lg-12;">
+        <hr>
+        <h4 class="form-title text-center">Email Sender</h4>
+        <hr>
+        <br>
+    </div>
+    <form [formGroup]="emailForm">
+        <div class="card mb-5">
+            <div class="card-body">
+                <div class="row">
+                    <div>
+                        <label for="toEmail" class="form-label"><b>Către</b></label>
+                        <br>
+                        <div style="position: relative;">
+                            <ejs-textbox id='toEmail' class="e-input e-control" type="text" placeholder="Adaugă email"
+                                validationRules="emailValidation" formControlName="toEmail"></ejs-textbox>
+                            <button ejs-button type="button" class="btn btn-success"
+                                style="position: absolute; top: 0; right: 0;" (click)="addChips()">Adaugă</button>
+                        </div>
+                        <label *ngIf="emailGresit" class="error-message">Adresa de email are un format
+                            greșit.</label>
+                        <ejs-chiplist #chips id="chips" role="option" enableDelete="true" cssClass="e-info"></ejs-chiplist>
+                        <div *ngIf="!emailListNotEmpty" class="error-message">
+                            Nu există adrese de email introduse pentru a trimite.
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-8">
+                        <label for="numberOfEmails" class="form-label"><b>Număr de email-uri de trimis</b></label>
+                        <br>
+                        <ejs-numerictextbox class="e-numerictextbox" id="numberOfEmails" name="numberOfEmails"
+                            formControlName="numberOfEmails" [min]="1" placeholder="Numărul de email-uri"
+                            validationRules="numberValidation" format="0" required>
+                        </ejs-numerictextbox>
+                        <div *ngIf="emailForm.get('numberOfEmails')?.invalid && (emailForm.get('numberOfEmails')?.dirty || emailForm.get('numberOfEmails')?.touched)"
+                            class="error">
+                            <div *ngIf="emailForm.get('numberOfEmails')?.errors?.['required']" class="error-message">
+                                Introdu
+                                numărul de email-uri de trimis.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="secondsBetweenEmails" class="form-label"><b>Interval secunde:</b></label>
+                        <br>
+                        <ejs-numerictextbox class="e-numerictextbox" id="secondsBetweenEmails"
+                            name="secondsBetweenEmails" formControlName="secondsBetweenEmails" [min]="2" [max]="10"
+                            placeholder="Numărul de email-uri" validationRules="numberValidation" format="0.00"
+                            required>
+                        </ejs-numerictextbox>
+                        <div *ngIf="emailForm.get('secondsBetweenEmails')?.invalid && (emailForm.get('secondsBetweenEmails')?.dirty || emailForm.get('secondsBetweenEmails')?.touched)"
+                            class="error">
+                            <div *ngIf="emailForm.get('secondsBetweenEmails')?.errors?.['required']"
+                                class="error-message">
+                                Introdu
+                                numărul de email-uri de trimis.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <label for="startTime" class="form-label"><b>Dată de început</b></label>
+                    <br>
+                    <ejs-datetimepicker id="startTime" [min]='today' [format]="'dd-MM-yyyy HH:mm a'"
+                        [showTodayButton]="false" name="startTime" formControlName="startTime"
+                        placeholder="Selectează dată început" validationRules="dateValidation" step="1">
+                    </ejs-datetimepicker>
+                </div>
+                <br>
+                <!-- <div>
+                    <label for="endTime" class="form-label"><b>Dată de sfârșit</b></label>
+                    <br>
+                    <ejs-datetimepicker id="endTime" [min]='today' [showTodayButton]="false"
+                        [format]="'dd-MM-yyyy HH:mm a'" name="endTime" formControlName="endTime"
+                        placeholder="Selectează dată sfârșit" validationRules="dateValidation" step="1">
+                    </ejs-datetimepicker>
+                    <div *ngIf="(emailForm.get('endTime')?.dirty || emailForm.get('endTime')?.touched)" class="error">
+                        <div *ngIf="emailForm.get('endTime')?.errors?.['required']" style="color: rgb(238, 234, 234);">
+                            Dată de început este opțional
+                        </div>
+                    </div>
+                </div> -->
+                <br>
+                <span class="tooltip-icon " ngbTooltip="Tooltip text" placement="top">
+                    <i class="fas fa-info-circle"></i> <span>Câmpurile "Dată început" și "Dată sfârșit" sunt
+                        opționale</span>
+                </span>
+            </div>
+            <br>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6 text-center">
+                        <button ejs-button class="btn-danger" type="reset" (click)="onReset()">Resetează</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button ejs-button class="btn-secondary" type="submit" (click)="sendEmails()">Trimite</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </form>
+</div>
+
+<ejs-dialog isModal="true" #saveModal (overlayClick)="saveModal.hide()" [visible]="false" [header]="modalHeader"
+  [content]="modalContent" width='500px' [buttons]='buttons' [animationSettings]="animationSettings">
+</ejs-dialog>
